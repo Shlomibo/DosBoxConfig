@@ -40,4 +40,44 @@ namespace Configuration.ConfigKeys
 		VESA_NOLFB,
 		VESA_OLDVBE,
 	}
+
+	public enum Scaler
+	{
+		None,
+		Normal2X,
+		Normal3X,
+		AdvMame2X,
+		AdvMame3X,
+		AdvInterp2X,
+		AdvInterp3X,
+		HQ2X,
+		HQ3X, 
+		_2XSAI, 
+		Super2XSAI,
+		SuperEagle,
+		TV2X,
+		TV3X,
+		RGB2X,
+		RGB3X,
+		Scan2X, 
+		Scan3X,
+	}
+
+	public enum Core
+	{
+		Auto,
+		Dynamic,
+		Normal, 
+		Simple,
+	}
+
+	public enum CPUType
+	{
+		I386,
+		Slow386,
+		Slow486,
+		SlowPentium,
+		Prefetch386
+		// 386, 386_slow, 486_slow, pentium_slow, 386_prefetch
+	}
 }

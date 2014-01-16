@@ -21,4 +21,13 @@ namespace Configuration.ConfigKeys.Accomodators
 			return Priority.Parse(str);
 		}
 	}
+
+	public class CyclesParser : ParserBase<Cycles>
+	{
+		public override Cycles Parse(string str)
+		{
+			return Cycles.Parse(str);
+		}
+	}
+
 }

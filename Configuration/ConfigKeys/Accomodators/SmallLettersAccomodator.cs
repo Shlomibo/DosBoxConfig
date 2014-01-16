@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys.Accomodators
 {
-	public class SmallLettersAccomodator : ConfigValueAccomodator<object, string>
+	public class SmallLettersAccomodator : IConfigValueAccomodator<object, string>
 	{
 		#region Properties
 
@@ -23,15 +23,25 @@ namespace Configuration.ConfigKeys.Accomodators
 
 		#region Methods
 
-		public override string Accomodate(object value)
+		public string Accomodate(object value)
 		{
 			return value.ToString().ToLowerInvariant();
 		}
 
-		public override object AccomodateBack(string value)
+		public object AccomodateBack(string value)
 		{
 			return this.Parser.Parse(value);
 		} 
+
+		object IConfigValueAccomodator.Accomodate(object value)
+		{
+			return Accomodate(value);
+		}
+
+		object IConfigValueAccomodator.AccomodateBack(object value)
+		{
+			return AccomodateBack((string)value);
+		}
 		#endregion
 
 	}

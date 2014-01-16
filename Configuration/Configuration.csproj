@@ -43,10 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigKeys\Accomodators\CPUTypeAccomodator.cs" />
+    <Compile Include="ConfigKeys\Accomodators\IllegalEnumValAccomodator.cs" />
     <Compile Include="ConfigKeys\Accomodators\Parsers.cs" />
+    <Compile Include="ConfigKeys\CPUKey.cs" />
+    <Compile Include="ConfigKeys\Cycles.cs" />
     <Compile Include="ConfigKeys\DosBoxKey.cs" />
     <Compile Include="ConfigKeys\Enums.cs" />
     <Compile Include="ConfigKeys\Priority.cs" />
+    <Compile Include="ConfigKeys\RenderKey.cs" />
     <Compile Include="ConfigKeys\Resolution.cs" />
     <Compile Include="ConfigKeys\SDLConfigKey.cs" />
     <Compile Include="ConfigKeys\Accomodators\SmallLettersAccomodator.cs" />
