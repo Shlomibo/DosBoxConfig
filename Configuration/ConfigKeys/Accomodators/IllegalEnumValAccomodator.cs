@@ -58,11 +58,11 @@ namespace Configuration.ConfigKeys.Accomodators
 			{
 				this.Parser = (IParser<TEnumType>)Activator.CreateInstance(parameter as Type);
 			}
-			else if (parameter is Type[])
+			else if (parameter is IList<Type>)
 			{
-				var typesArr = (Type[])parameter;
+				var typesArr = (IList<Type>)parameter;
 
-				if ((typesArr.Length != PARAMS_COUNT) ||
+				if ((typesArr.Count != PARAMS_COUNT) ||
 					!typeof(IConfigValueAccomodator<string, string>).IsAssignableFrom(typesArr[ACCOMODATOR_INDEX]) ||
 					!typeof(IParser<TEnumType>).IsAssignableFrom(typesArr[PARSER_INDEX]))
 				{
@@ -103,20 +103,14 @@ namespace Configuration.ConfigKeys.Accomodators
 				enumValue = enumValue.Substring(LEGAL_PREFIX.Length);
 			}
 
-			if (this.FinalAccomodator != null)
-			{
-				enumValue = this.FinalAccomodator.Accomodate(enumValue);
-			}
+			enumValue = this.FinalAccomodator?.Accomodate(enumValue) ?? enumValue;
 
 			return enumValue;
 		}
 
 		public override TEnumType AccomodateBack(string value)
 		{
-			if (this.FinalAccomodator != null)
-			{
-				value = this.FinalAccomodator.AccomodateBack(value);
-			}
+			value = this.FinalAccomodator?.AccomodateBack(value) ?? value;
 
 			if (IsIllegal(value.First()))
 			{

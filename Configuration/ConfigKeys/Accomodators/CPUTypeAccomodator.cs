@@ -20,11 +20,11 @@ namespace Configuration.ConfigKeys.Accomodators
 		{
 			translation = new Dictionary<CPUType, string>()
 				{
-					{ CPUType.I386, "386" },
-					{ CPUType.Slow386, "386_slow" },
-					{ CPUType.Slow486, "486_slow" },
-					{ CPUType.SlowPentium, "pentium_slow" },
-					{ CPUType.Prefetch386, "386_prefetch" },
+					[CPUType.I386] = "386",
+					[CPUType.Slow386] = "386_slow",
+					[CPUType.Slow486] = "486_slow",
+					[CPUType.SlowPentium] = "pentium_slow",
+					[CPUType.Prefetch386] = "386_prefetch",
 				};
 
 			backTranslation = translation.ToDictionary(
