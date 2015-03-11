@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Extansions.Object;
 
 namespace Configuration.ConfigKeys
 {
@@ -22,8 +23,8 @@ namespace Configuration.ConfigKeys
 
 		#region Properties
 
-		public PriorityLevel Focused { get; private set; }
-		public PriorityLevel Background { get; private set; }
+		public PriorityLevel Focused { get; }
+		public PriorityLevel Background { get; }
 		#endregion
 
 		#region Ctor
@@ -38,11 +39,9 @@ namespace Configuration.ConfigKeys
 
 		#region Methods
 
-		public bool Equals(Priority other)
-		{
-			return (this.Focused == other.Focused) &&
-				(this.Background == other.Background);
-		}
+		public bool Equals(Priority other) =>
+			(this.Focused == other.Focused) &&
+			(this.Background == other.Background);
 
 		// override object.Equals
 		public override bool Equals(object obj)
@@ -64,10 +63,8 @@ namespace Configuration.ConfigKeys
 		}
 
 		// override object.GetHashCode
-		public override int GetHashCode()
-		{
-			return (this.Focused.GetHashCode() << 16) | this.Background.GetHashCode();
-		}
+		public override int GetHashCode() =>
+			ObjectExtansions.CreateHashCode(this.Focused, this.Background);
 
 		public int CompareTo(Priority other)
 		{
@@ -81,13 +78,16 @@ namespace Configuration.ConfigKeys
 			return result;
 		}
 
-		public override string ToString()
-		{
-			return string.Format("{0},{1}", this.Focused, this.Background);
-		}
+		public override string ToString() =>
+			$"{this.Focused},{this.Background}";
 
 		public static Priority Parse(string s)
 		{
+			if (s == null)
+			{
+				throw new NullReferenceException(nameof(s));
+			}
+
 			Priority result;
 
 			if (!TryParse(s, out result))
@@ -139,35 +139,23 @@ namespace Configuration.ConfigKeys
 
 		#region Operators
 
-		public static bool operator ==(Priority left, Priority right)
-		{
-			return left.Equals(right);
-		}
+		public static bool operator ==(Priority left, Priority right) =>
+			left.Equals(right);
 
-		public static bool operator !=(Priority left, Priority right)
-		{
-			return !(left == right);
-		}
+		public static bool operator !=(Priority left, Priority right) =>
+			!(left == right);
 
-		public static bool operator <(Priority left, Priority right)
-		{
-			return left.CompareTo(right) < 0;
-		}
+		public static bool operator <(Priority left, Priority right) =>
+			left.CompareTo(right) < 0;
 
-		public static bool operator >(Priority left, Priority right)
-		{
-			return left.CompareTo(right) > 0;
-		}
+		public static bool operator >(Priority left, Priority right) =>
+			left.CompareTo(right) > 0;
 
-		public static bool operator <=(Priority left, Priority right)
-		{
-			return !(left > right);
-		}
+		public static bool operator <=(Priority left, Priority right) =>
+			!(left > right);
 
-		public static bool operator >=(Priority left, Priority right)
-		{
-			return !(left < right);
-		}
+		public static bool operator >=(Priority left, Priority right) =>
+			!(left < right);
 		#endregion
 	}
 }

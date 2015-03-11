@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Extansions.Object;
 
 namespace Configuration.ConfigKeys
 {
@@ -13,7 +14,6 @@ namespace Configuration.ConfigKeys
 		private const string ORIGINAL_STRING = "Original";
 		private const string DESKTOP_STRING = "Desktop";
 
-		private static readonly char[] RES_SEPARATOR = { 'x', 'X' };
 		private const int RES_VALUE_COUNT = 2;
 
 		private const int DESKTOP_VALUE = -1;
@@ -21,14 +21,16 @@ namespace Configuration.ConfigKeys
 
 		#region Fields
 
+		private static readonly char[] resSeparator = { 'x', 'X' };
+
 		public static readonly Resolution Original = new Resolution();
 		public static readonly Resolution Desktop = new Resolution(DESKTOP_VALUE, DESKTOP_VALUE);
 		#endregion
 
 		#region Properties
 
-		public int Width { get; private set; }
-		public int Height { get; private set; }
+		public int Width { get; }
+		public int Height { get; }
 		#endregion
 
 		#region Ctor
@@ -55,15 +57,13 @@ namespace Configuration.ConfigKeys
 			}
 			else
 			{
-				return string.Format("{0}x{1}", this.Width, this.Height);
+				return $"{this.Width}x{this.Height}";
 			}
 		}
 
-		public bool Equals(Resolution other)
-		{
-			return (this.Width == other.Width) &&
-				(this.Height == other.Height);
-		}
+		public bool Equals(Resolution other) =>
+			(this.Width == other.Width) &&
+			(this.Height == other.Height);
 
 		// override object.Equals
 		public override bool Equals(object obj)
@@ -85,14 +85,16 @@ namespace Configuration.ConfigKeys
 		}
 
 		// override object.GetHashCode
-		public override int GetHashCode()
-		{
-			// TODO: write your implementation of GetHashCode() here
-			return (this.Width.GetHashCode() << 16) | this.Height.GetHashCode();
-		}
+		public override int GetHashCode() =>
+			ObjectExtansions.CreateHashCode(this.Width, this.Height);
 
 		public static Resolution Parse(string s)
 		{
+			if (s == null)
+			{
+				throw new NullReferenceException(nameof(s));
+			}
+
 			Resolution result;
 
 			if (!TryParse(s, out result))
@@ -119,7 +121,7 @@ namespace Configuration.ConfigKeys
 			}
 			else
 			{
-				string[] split = s.Split(RES_SEPARATOR);
+				string[] split = s.Split(resSeparator);
 				int width = 0;
 				int height = 0;
 
@@ -139,15 +141,11 @@ namespace Configuration.ConfigKeys
 
 		#region Operators
 
-		public static bool operator ==(Resolution left, Resolution right)
-		{
-			return left.Equals(right);
-		}
+		public static bool operator ==(Resolution left, Resolution right) =>
+			left.Equals(right);
 
-		public static bool operator !=(Resolution left, Resolution right)
-		{
-			return !(left == right);
-		}
+		public static bool operator !=(Resolution left, Resolution right) =>
+			!(left == right);
 		#endregion
 	}
 }

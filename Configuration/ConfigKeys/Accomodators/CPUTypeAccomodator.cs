@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys.Accomodators
 {
-	class CPUTypeAccomodator : ConfigValueAccomodator<CPUType, string>
+	internal class CPUTypeAccomodator : ConfigValueAccomodator<CPUType, string>
 	{
 		#region Fields
 
@@ -30,17 +30,16 @@ namespace Configuration.ConfigKeys.Accomodators
 			backTranslation = translation.ToDictionary(
 				keyValue => keyValue.Value,
 				keyValue => keyValue.Key);
-		} 
+		}
 		#endregion
 
-		public override string Accomodate(CPUType value)
-		{
-			return translation[value];
-		}
+		#region Methods
 
-		public override CPUType AccomodateBack(string value)
-		{
-			return backTranslation[value];
-		}
+		public override string Accomodate(CPUType value) =>
+			translation[value];
+
+		public override CPUType AccomodateBack(string value) =>
+			backTranslation[value];
+		#endregion
 	}
 }

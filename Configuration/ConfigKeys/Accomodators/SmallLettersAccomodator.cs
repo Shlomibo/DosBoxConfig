@@ -6,42 +6,39 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys.Accomodators
 {
-	public class SmallLettersAccomodator : IConfigValueAccomodator<object, string>
+	public sealed class SmallLettersAccomodator : IConfigValueAccomodator<object, string>
 	{
 		#region Properties
 
-		public IParser Parser { get; private set; } 
+		public IParser Parser { get; } 
 		#endregion
 
 		#region Ctor
 
 		public SmallLettersAccomodator(Type parserType)
 		{
+			if (parserType == null)
+			{
+				throw new NullReferenceException(nameof(parserType));
+			}
+
 			this.Parser = (IParser)Activator.CreateInstance(parserType);
 		} 
 		#endregion
 
 		#region Methods
 
-		public string Accomodate(object value)
-		{
-			return value.ToString().ToLowerInvariant();
-		}
+		public string Accomodate(object value) =>
+			value.ToString().ToLowerInvariant();
 
-		public object AccomodateBack(string value)
-		{
-			return this.Parser.Parse(value);
-		} 
+		public object AccomodateBack(string value) =>
+			this.Parser.Parse(value);
 
-		object IConfigValueAccomodator.Accomodate(object value)
-		{
-			return Accomodate(value);
-		}
+		object IConfigValueAccomodator.Accomodate(object value) =>
+			Accomodate(value);
 
-		object IConfigValueAccomodator.AccomodateBack(object value)
-		{
-			return AccomodateBack((string)value);
-		}
+		object IConfigValueAccomodator.AccomodateBack(object value) =>
+			AccomodateBack((string)value);
 		#endregion
 
 	}

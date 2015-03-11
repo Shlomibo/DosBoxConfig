@@ -27,8 +27,8 @@ namespace Configuration.ConfigKeys.Accomodators
 
 		#region Properties
 
-		public IConfigValueAccomodator<string, string> FinalAccomodator { get; private set; }
-		public IParser<TEnumType> Parser { get; private set; }
+		public IConfigValueAccomodator<string, string> FinalAccomodator { get; }
+		public IParser<TEnumType> Parser { get; }
 		#endregion
 
 		#region Ctor
@@ -37,7 +37,7 @@ namespace Configuration.ConfigKeys.Accomodators
 		{
 			if (!typeof(TEnumType).IsEnum)
 			{
-				throw new InvalidOperationException("TEnumType must be type of enum");
+				throw new InvalidOperationException($"{nameof(TEnumType)} must be type of enum");
 			}
 
 			this.Parser = new DefaultTypeParser<TEnumType>();
@@ -82,12 +82,14 @@ namespace Configuration.ConfigKeys.Accomodators
 
 			if (isIllegal)
 			{
-				throw new ArgumentException(string.Format(
-					"The argument must Type which is assignable from one of the following types: {0}, {1}, or a Type array " +
-					"which contains type which {0} is assignable from, as the first item, " +
-					"and type which {1} is assignable from, as the second",
-					typeof(IConfigValueAccomodator<string, string>).Name,
-					typeof(IParser<TEnumType>).Name), "parameter");
+				const string valueAccomodatorName = nameof(IConfigValueAccomodator<string, string>);
+				string parserName = typeof(IParser<TEnumType>).Name;
+
+                throw new ArgumentException(
+					$"The argument must have Type which is assignable from one of the following types: {valueAccomodatorName}, " +
+					$"{parserName}, or a Type array which contains type which {valueAccomodatorName} is assignable from, " +
+					$"as the first item, and type which {parserName} is assignable from, as the second",
+					"parameter");
 			}
 		}
 		#endregion
@@ -116,7 +118,7 @@ namespace Configuration.ConfigKeys.Accomodators
 				value = this.FinalAccomodator.AccomodateBack(value);
 			}
 
-			if (IsIllegal(value[0]))
+			if (IsIllegal(value.First()))
 			{
 				value = LEGAL_PREFIX + value;
 			}

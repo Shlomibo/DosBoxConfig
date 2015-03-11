@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities.Extansions.Object;
 
 namespace Configuration.ConfigKeys
 {
@@ -16,38 +17,28 @@ namespace Configuration.ConfigKeys
 		private const string FIXED_STRING_FORMAT = FIXED_STRING + "#{0}";
 		private const char CYCLES_SEPARATOR = '#';
 		private const int FIXED_PARTS_COUNT = 2;
+
+		private const int IDX_TYPE = 0;
+		private const int IDX_CYCLES = 1;
 		#endregion
 
 		#region Fields
 
-		private bool isMax;
+		public static readonly Cycles Auto = new Cycles(false);
+		public static readonly Cycles Max = new Cycles(true);
 
-		public static readonly Cycles Auto = new Cycles();
-
-		public static readonly Cycles Max = new Cycles
-		{
-			Cycles = null,
-			isMax = true,
-		};
+		private readonly bool isMax;
 		#endregion
+		
 		#region Properties
 
-		public int? Cycles { get; private set; }
+		public int? CyclesCount { get; }
 
-		public bool IsAuto
-		{
-			get { return !this.IsMax && !this.IsFixed; }
-		}
+		public bool IsAuto => !this.IsMax && !this.IsFixed;
 
-		public bool IsMax
-		{
-			get { return this.isMax && !this.IsFixed; }
-		}
+		public bool IsMax => this.isMax && !this.IsFixed;
 
-		public bool IsFixed
-		{
-			get { return this.Cycles.HasValue; }
-		}
+		public bool IsFixed => this.CyclesCount.HasValue;
 		#endregion
 
 		#region Ctor
@@ -56,7 +47,13 @@ namespace Configuration.ConfigKeys
 			: this()
 		{
 			this.isMax = false;
-			this.Cycles = cycles;
+			this.CyclesCount = cycles;
+		}
+		
+		private Cycles(bool isMax)
+			: this()
+		{
+			this.isMax = isMax;
 		}
 		#endregion
 
@@ -82,19 +79,12 @@ namespace Configuration.ConfigKeys
 		}
 
 		// override object.GetHashCode
-		public override int GetHashCode()
-		{
-			// TODO: write your implementation of GetHashCode() here
-			return ((this.isMax.GetHashCode() << 24) | 
-				(this.Cycles.HasValue.GetHashCode() << 16)) ^ 
-				(this.Cycles ?? 0);
-		}
+		public override int GetHashCode() =>
+			ObjectExtansions.CreateHashCode(this.isMax, this.CyclesCount);
 
-		public bool Equals(Cycles other)
-		{
-			return this.isMax.Equals(other.isMax) &&
-				this.Cycles.Equals(other.Cycles);
-		}
+		public bool Equals(Cycles other) =>
+			(this.isMax == other.isMax) &&
+			(this.CyclesCount == other.CyclesCount);
 
 		public int CompareTo(Cycles other)
 		{
@@ -108,7 +98,7 @@ namespace Configuration.ConfigKeys
 			}
 			else
 			{
-				return this.Cycles.Value.CompareTo(other.Cycles.Value);
+				return this.CyclesCount.Value.CompareTo(other.CyclesCount.Value);
 			}
 
 		}
@@ -125,12 +115,17 @@ namespace Configuration.ConfigKeys
 			}
 			else
 			{
-				return string.Format(FIXED_STRING_FORMAT, this.Cycles);
+				return string.Format(FIXED_STRING_FORMAT, this.CyclesCount);
 			}
 		}
 
 		public static Cycles Parse(string s)
 		{
+			if (s == null)
+			{
+				throw new NullReferenceException(nameof(s));
+			}
+
 			Cycles result;
 
 			if (!TryParse(s, out result))
@@ -162,8 +157,8 @@ namespace Configuration.ConfigKeys
 				int cycles;
 
 				if ((splitted.Length == FIXED_PARTS_COUNT) &&
-					FIXED_STRING.Equals(splitted[0], StringComparison.InvariantCultureIgnoreCase) &&
-					int.TryParse(splitted[1], out cycles)) 
+					FIXED_STRING.Equals(splitted[IDX_TYPE], StringComparison.InvariantCultureIgnoreCase) &&
+					int.TryParse(splitted[IDX_CYCLES], out cycles)) 
 				{
 					didSucceeded = true;
 					result = new Cycles(cycles);
@@ -176,39 +171,27 @@ namespace Configuration.ConfigKeys
 
 		#region Operators
 
-		public static bool operator ==(Cycles left, Cycles right)
-		{
-			return left.Equals(right);
-		}
+		public static bool operator ==(Cycles left, Cycles right) =>
+			left.Equals(right);
 
-		public static bool operator !=(Cycles left, Cycles right)
-		{
-			return !(left == right);
-		}
+		public static bool operator !=(Cycles left, Cycles right) =>
+			!(left == right);
 
-		public static bool operator <(Cycles left, Cycles right)
-		{
-			return left.IsFixed && right.IsFixed &&
-				(left.CompareTo(right) < 0);
-		}
+		public static bool operator <(Cycles left, Cycles right) =>
+			left.IsFixed && right.IsFixed &&
+			(left.CompareTo(right) < 0);
 
-		public static bool operator >(Cycles left, Cycles right)
-		{
-			return left.IsFixed && right.IsFixed &&
-				(left.CompareTo(right) > 0);
-		}
+		public static bool operator >(Cycles left, Cycles right) =>
+			left.IsFixed && right.IsFixed &&
+			(left.CompareTo(right) > 0);
 
-		public static bool operator <=(Cycles left, Cycles right)
-		{
-			return left.IsFixed && right.IsFixed &&
-				!(left > right);
-		}
+		public static bool operator <=(Cycles left, Cycles right) =>
+			left.IsFixed && right.IsFixed &&
+			!(left > right);
 
-		public static bool operator >=(Cycles left, Cycles right)
-		{
-			return left.IsFixed && right.IsFixed &&
-				!(left < right);
-		}
+		public static bool operator >=(Cycles left, Cycles right) =>
+			left.IsFixed && right.IsFixed &&
+			!(left < right);
 		#endregion
 	}
 }

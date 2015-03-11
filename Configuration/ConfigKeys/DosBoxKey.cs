@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys
 {
-	public class DosBoxKey : ConfigKey
+	public sealed class DosBoxKey : ConfigKey
 	{
 		#region Consts
 
@@ -21,10 +21,7 @@ namespace Configuration.ConfigKeys
 
 		#region Properties
 
-		public override string Name
-		{
-			get { return KEY_NAME; }
-		}
+		public override string Name => KEY_NAME;
 
 		[ConfigValue(VAL_NAME_LANGUAGE)]
 		public string LanguageFile { get; set; }

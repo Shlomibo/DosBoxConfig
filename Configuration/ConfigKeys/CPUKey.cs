@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys
 {
-	public class CPUKey : ConfigKey
+	public sealed class CPUKey : ConfigKey
 	{
 		#region Consts
 
@@ -22,10 +22,7 @@ namespace Configuration.ConfigKeys
 
 		#region Properties
 
-		public override string Name
-		{
-			get { return KEY_NAME; }
-		}
+		public override string Name => KEY_NAME;
 
 		[ConfigValue(VAL_NAME_CORE, 
 			Accomodator = typeof(SmallLettersAccomodator))]

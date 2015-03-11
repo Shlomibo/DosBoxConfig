@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys
 {
-	public class RenderKey:ConfigKey
+	public sealed class RenderKey: ConfigKey
 	{
 		#region Consts
 
@@ -20,10 +20,7 @@ namespace Configuration.ConfigKeys
 
 		#region Properties
 
-		public override string Name
-		{
-			get { return KEY_NAME; }
-		}
+		public override string Name => KEY_NAME;
 
 		[ConfigValue(VAL_NAME_FRAME_SKIP)]
 		public int FrameSkip { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys
 {
-	public class SDLConfigKey : ConfigKey
+	public sealed class SDLConfigKey : ConfigKey
 	{
 		#region Consts
 
@@ -28,10 +28,7 @@ namespace Configuration.ConfigKeys
 
 		#region Properties
 
-		public override string Name
-		{
-			get { return KEY_NAME; }
-		}
+		public override string Name => KEY_NAME;
 
 		[ConfigValue(VAL_NAME_FULL_SCREEN,
 			Accomodator = typeof(SmallLettersAccomodator),

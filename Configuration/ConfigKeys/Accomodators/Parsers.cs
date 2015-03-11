@@ -6,28 +6,22 @@ using System.Threading.Tasks;
 
 namespace Configuration.ConfigKeys.Accomodators
 {
-	public class ResolutionParser : ParserBase<Resolution>
+	public sealed class ResolutionParser : ParserBase<Resolution>
 	{
-		public override Resolution Parse(string str)
-		{
-			return Resolution.Parse(str);
-		}
+		public override Resolution Parse(string str) =>
+			Resolution.Parse(str);
 	}
 
-	public class PriorityParser : ParserBase<Priority>
+	public sealed class PriorityParser : ParserBase<Priority>
 	{
-		public override Priority Parse(string str)
-		{
-			return Priority.Parse(str);
-		}
+		public override Priority Parse(string str) =>
+			Priority.Parse(str);
 	}
 
-	public class CyclesParser : ParserBase<Cycles>
+	public sealed class CyclesParser : ParserBase<Cycles>
 	{
-		public override Cycles Parse(string str)
-		{
-			return Cycles.Parse(str);
-		}
+		public override Cycles Parse(string str) =>
+			Cycles.Parse(str);
 	}
 
 }

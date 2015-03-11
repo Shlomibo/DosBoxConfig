@@ -41,6 +41,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Utilities">
+      <HintPath>..\..\..\Visual Studio 2013\Projects\Utilities\Utilities\bin\Release\Utilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigKeys\Accomodators\CPUTypeAccomodator.cs" />
